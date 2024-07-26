@@ -1,0 +1,56 @@
+{
+  "properties": {
+    "connectionParameters": {
+      "username": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "User Name",
+          "description": "The username for Requestor API",
+          "tooltip": "Provide the user name",
+          "constraints": {
+            "tabIndex": 2,
+            "clearText": true,
+            "required": "true"
+          }
+        }
+      },
+      "password": {
+        "type": "securestring",
+        "uiDefinition": {
+          "displayName": "Password",
+          "description": "The password for this Requestor API",
+          "tooltip": "Provide the password",
+          "constraints": {
+            "tabIndex": 3,
+            "clearText": false,
+            "required": "true"
+          }
+        }
+      },
+      "baseUrl": {
+        "type": "string",
+        "uiDefinition": {
+          "constraints": {
+            "required": "true"
+          },
+          "description": "e.g. https://requestor.servicedesk.net",
+          "displayName": "Base URL",
+          "tooltip": "Provide the Base URL of a Requestor, such as https://requestor.servicedesk.net"
+        }
+      }
+    },
+    "iconBrandColor": "#000000",
+    "capabilities": [],
+    "publisher": "Requestor",
+    "stackOwner": "Requestor",
+    "policyTemplateInstances": [
+      {
+        "parameters": {
+          "x-ms-apimTemplateParameter.urlTemplate": "@connectionParameters('baseUrl')"
+        },
+        "templateId": "dynamichosturl",
+        "title": "Route to correct Requestor URL"
+      }
+    ]
+  }
+}

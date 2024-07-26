@@ -1,0 +1,983 @@
+{
+  "swagger": "2.0",  
+  "info": {
+    "title": "Requestor",
+    "description": "Requestor is a versatile multichannel helpdesk designed for customer support and internal request management. With Requestor, you can efficiently handle customer support and internal team requests through email, phone, and chat, all in one convenient location. The Requestor connector is intended for Requestor operators to manage tickets and contacts.",
+    "version": "1.0",
+    "contact": {
+      "name": "Requestor Support",
+      "url": "https://www.requestor.com/kontakt/",
+      "email": "support@requestor.com"
+    }
+  },
+  "host": "requestor.servicedesk.net",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [],
+  "produces": [],
+  "paths": {    
+    "/api/PowerAutomate/CreateTicketCreatedTrigger": {
+      "x-ms-notification-content": {
+        "description": "Novy ticket",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "TICKET_ID": {
+              "type": "integer",
+              "format": "int32",
+              "description": "TICKET_ID"
+            },
+            "TICKET_REF": {
+              "type": "string",
+              "description": "TICKET_REF"
+            },
+            "TICKET_SUBJECT": {
+              "type": "string",
+              "description": "TICKET_SUBJECT"
+            },
+            "TICKET_SERVICE": {
+              "type": "string",
+              "description": "TICKET_SERVICE"
+            },
+            "TICKET_SUBMITTEREMAIL": {
+              "type": "string",
+              "description": "TICKET_SUBMITTEREMAIL"
+            },
+            "TICKET_FIRSTMESSAGE": {
+              "type": "string",
+              "description": "TICKET_FIRSTMESSAGE"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a ticket is created",
+        "description": "",
+        "operationId": "TicketCreated",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "default": "CallbackUrl",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/DeleteTrigger/{id}": {
+      "delete": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {}
+          }
+        },
+        "summary": "Delete Trigger",
+        "operationId": "DeleteTrigger",
+        "x-ms-visibility": "internal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/api/Tickets/NewTicket": {
+      "post": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {}
+          }
+        },
+        "summary": "Create Ticket",
+        "operationId": "CreateTicket",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Type": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "Type",
+                  "title": "",
+                  "x-ms-dynamic-values": {
+                    "operationId": "GetTicketTypes",
+                    "value-path": "Id",
+                    "value-collection": "TicketTypes",
+                    "value-title": "Name"
+                  }
+                },
+                "ServiceId": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "ServiceId",
+                  "title": "",
+                  "x-ms-dynamic-values": {
+                    "operationId": "GetServices",
+                    "value-path": "Id",
+                    "value-collection": "Services",
+                    "value-title": "Name"
+                  }
+                },
+                "Subject": {
+                  "type": "string",
+                  "description": "Subject",
+                  "title": ""
+                },
+                "Message": {
+                  "type": "string",
+                  "description": "Message",
+                  "title": ""
+                },
+                "SubmitterEmail": {
+                  "type": "string",
+                  "description": "SubmitterEmail",
+                  "title": ""
+                },
+                "SolverUserProviderKey": {
+                  "type": "string",
+                  "description": "SolverUserProviderKey"
+                }
+              },
+              "required": [
+                "Message",
+                "ServiceId",
+                "Subject",
+                "SubmitterEmail",
+                "Type"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/Tickets/GetServicesForTicketsFilter": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Services": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "description": "Name"
+                      },
+                      "Description": {
+                        "type": "string",
+                        "description": "Description"
+                      },
+                      "Department": {
+                        "type": "object",
+                        "properties": {
+                          "Id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Id"
+                          },
+                          "Name": {
+                            "type": "string",
+                            "description": "Name"
+                          },
+                          "Description": {
+                            "type": "string",
+                            "description": "Description"
+                          }
+                        },
+                        "description": "Department"
+                      }
+                    }
+                  },
+                  "description": "Services"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get Services",
+        "operationId": "GetServices",
+        "parameters": [],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/api/PowerAutomate/CreateUserCreatedTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ID": {
+              "type": "string",
+              "description": "ID"
+            },
+            "USERNAME": {
+              "type": "string",
+              "description": "USERNAME"
+            },
+            "FIRSTNAME": {
+              "type": "string",
+              "description": "FIRSTNAME"
+            },
+            "LASTNAME": {
+              "type": "string",
+              "description": "LASTNAME"
+            },
+            "FULLNAME": {
+              "type": "string",
+              "description": "FULLNAME"
+            },
+            "EMAIL": {
+              "type": "string",
+              "description": "EMAIL"
+            },
+            "LASTUPDATEDUTC": {
+              "type": "string",
+              "description": "LASTUPDATEDUTC"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a user is created",
+        "operationId": "UserCreated",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "x-ms-notification-url": true,
+                  "x-ms-visibility": "internal",
+                  "title": ""
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateTicketMonitoringTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "TICKET_ID": {
+              "type": "integer",
+              "format": "int32",
+              "description": "TICKET_ID"
+            },
+            "TICKET_REF": {
+              "type": "string",
+              "description": "TICKET_REF"
+            },
+            "TICKET_SUBJECT": {
+              "type": "string",
+              "description": "TICKET_SUBJECT"
+            },
+            "TICKET_SERVICE": {
+              "type": "string",
+              "description": "TICKET_SERVICE"
+            },
+            "TICKET_SUBMITTEREMAIL": {
+              "type": "string",
+              "description": "TICKET_SUBMITTEREMAIL"
+            },
+            "TICKET_FIRSTMESSAGE": {
+              "type": "string",
+              "description": "TICKET_FIRSTMESSAGE"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "Ticket Monitoring",
+        "operationId": "TicketMonitoring",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateTicketStateChangeTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "TICKET_ID": {
+              "type": "integer",
+              "format": "int32",
+              "description": "TICKET_ID"
+            },
+            "TICKET_REF": {
+              "type": "string",
+              "description": "TICKET_REF"
+            },
+            "TICKET_SUBJECT": {
+              "type": "string",
+              "description": "TICKET_SUBJECT"
+            },
+            "TICKET_SERVICE": {
+              "type": "string",
+              "description": "TICKET_SERVICE"
+            },
+            "TICKET_SUBMITTEREMAIL": {
+              "type": "string",
+              "description": "TICKET_SUBMITTEREMAIL"
+            },
+            "TICKET_FIRSTMESSAGE": {
+              "type": "string",
+              "description": "TICKET_FIRSTMESSAGE"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a ticket state changes",
+        "operationId": "TicketStateChange",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateTicketCategoryChangeTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "TICKET_ID": {
+              "type": "integer",
+              "format": "int32",
+              "description": "TICKET_ID"
+            },
+            "TICKET_REF": {
+              "type": "string",
+              "description": "TICKET_REF"
+            },
+            "TICKET_SUBJECT": {
+              "type": "string",
+              "description": "TICKET_SUBJECT"
+            },
+            "TICKET_SERVICE": {
+              "type": "string",
+              "description": "TICKET_SERVICE"
+            },
+            "TICKET_SUBMITTEREMAIL": {
+              "type": "string",
+              "description": "TICKET_SUBMITTEREMAIL"
+            },
+            "TICKET_FIRSTMESSAGE": {
+              "type": "string",
+              "description": "TICKET_FIRSTMESSAGE"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a ticket category is changed",
+        "operationId": "TicketCategoryChange",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateTicketCustomFormChangeTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "TICKET_ID": {
+              "type": "integer",
+              "format": "int32",
+              "description": "TICKET_ID"
+            },
+            "TICKET_REF": {
+              "type": "string",
+              "description": "TICKET_REF"
+            },
+            "TICKET_SUBJECT": {
+              "type": "string",
+              "description": "TICKET_SUBJECT"
+            },
+            "TICKET_SERVICE": {
+              "type": "string",
+              "description": "TICKET_SERVICE"
+            },
+            "TICKET_SUBMITTEREMAIL": {
+              "type": "string",
+              "description": "TICKET_SUBMITTEREMAIL"
+            },
+            "TICKET_FIRSTMESSAGE": {
+              "type": "string",
+              "description": "TICKET_FIRSTMESSAGE"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "Ticket Custom Form Change",
+        "operationId": "TicketCustomFormChange",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateUserUpdatedTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ID": {
+              "type": "string",
+              "description": "ID"
+            },
+            "USERNAME": {
+              "type": "string",
+              "description": "USERNAME"
+            },
+            "FIRSTNAME": {
+              "type": "string",
+              "description": "FIRSTNAME"
+            },
+            "LASTNAME": {
+              "type": "string",
+              "description": "LASTNAME"
+            },
+            "FULLNAME": {
+              "type": "string",
+              "description": "FULLNAME"
+            },
+            "EMAIL": {
+              "type": "string",
+              "description": "EMAIL"
+            },
+            "LASTUPDATEDUTC": {
+              "type": "string",
+              "description": "LASTUPDATEDUTC"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a user is updated",
+        "operationId": "UserUpdated",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "x-ms-notification-url": true,
+                  "x-ms-visibility": "internal",
+                  "title": ""
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateUserDeletedTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ID": {
+              "type": "string",
+              "description": "ID"
+            },
+            "USERNAME": {
+              "type": "string",
+              "description": "USERNAME"
+            },
+            "FIRSTNAME": {
+              "type": "string",
+              "description": "FIRSTNAME"
+            },
+            "LASTNAME": {
+              "type": "string",
+              "description": "LASTNAME"
+            },
+            "FULLNAME": {
+              "type": "string",
+              "description": "FULLNAME"
+            },
+            "EMAIL": {
+              "type": "string",
+              "description": "EMAIL"
+            },
+            "LASTUPDATEDUTC": {
+              "type": "string",
+              "description": "LASTUPDATEDUTC"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a user is deleted",
+        "operationId": "UserDeleted",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateCompanyCreatedTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ID": {
+              "type": "string",
+              "description": "ID"
+            },
+            "NAME": {
+              "type": "string",
+              "description": "NAME"
+            },
+            "LASTUPDATEDUTC": {
+              "type": "string",
+              "description": "LASTUPDATEDUTC"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a company is created",
+        "operationId": "CompanyCreated",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateCompanyUpdatedTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ID": {
+              "type": "string",
+              "description": "ID"
+            },
+            "NAME": {
+              "type": "string",
+              "description": "NAME"
+            },
+            "LASTUPDATEDUTC": {
+              "type": "string",
+              "description": "LASTUPDATEDUTC"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a company is updated",
+        "operationId": "CompanyUpdated",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/PowerAutomate/CreateCompanyDeletedTrigger": {
+      "x-ms-notification-content": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ID": {
+              "type": "string",
+              "description": "ID"
+            },
+            "NAME": {
+              "type": "string",
+              "description": "NAME"
+            },
+            "LASTUPDATEDUTC": {
+              "type": "string",
+              "description": "LASTUPDATEDUTC"
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {},
+        "summary": "When a company is deleted",
+        "operationId": "CompanyDeleted",
+        "x-ms-trigger": "single",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CallbackUrl": {
+                  "type": "string",
+                  "description": "CallbackUrl",
+                  "title": "",
+                  "x-ms-visibility": "internal",
+                  "x-ms-notification-url": true
+                }
+              },
+              "required": [
+                "CallbackUrl"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/Account/CreateRequestorUser": {
+      "post": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {}
+          }
+        },
+        "summary": "Create User",
+        "operationId": "CreateUser",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "UserName": {
+                  "type": "string",
+                  "description": "UserName",
+                  "title": ""
+                },
+                "Email": {
+                  "type": "string",
+                  "description": "Email"
+                },
+                "Password": {
+                  "type": "string",
+                  "description": "Password"
+                },
+                "RoleEndUser": {
+                  "type": "boolean",
+                  "description": "RoleEndUser"
+                },
+                "RoleSmartUser": {
+                  "type": "boolean",
+                  "description": "RoleSmartUser"
+                },
+                "RoleOperator": {
+                  "type": "boolean",
+                  "description": "RoleOperator"
+                },
+                "RoleSuperOperator": {
+                  "type": "boolean",
+                  "description": "RoleSuperOperator"
+                },
+                "RoleAdministrator": {
+                  "type": "boolean",
+                  "description": "RoleAdministrator"
+                },
+                "FirstName": {
+                  "type": "string",
+                  "description": "FirstName"
+                },
+                "LastName": {
+                  "type": "string",
+                  "description": "LastName"
+                },
+                "MiddleName": {
+                  "type": "string",
+                  "description": "MiddleName"
+                },
+                "DisplayName": {
+                  "type": "string",
+                  "description": "DisplayName"
+                },
+                "Phone": {
+                  "type": "string",
+                  "description": "Phone"
+                },
+                "ChangePasswordAfterLogging": {
+                  "type": "boolean",
+                  "description": "ChangePasswordAfterLogging",
+                  "title": "",
+                  "enum": [
+                    "",
+                    true,
+                    false
+                  ]
+                },
+                "AdminNote": {
+                  "type": "string",
+                  "description": "AdminNote"
+                },
+                "AdditionalInformation": {
+                  "type": "string",
+                  "description": "AdditionalInformation"
+                },
+                "CustomerNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "CustomerNames"
+                }
+              },
+              "required": [
+                "UserName"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/api/Tickets/GetTicketTypes": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "TicketTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id"
+                      },
+                      "Name": {
+                        "type": "string",
+                        "description": "Name"
+                      }
+                    }
+                  },
+                  "description": "TicketTypes"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Gets a list of available Ticket Types",
+        "description": "",
+        "operationId": "GetTicketTypes",
+        "x-ms-visibility": "internal",
+        "parameters": []
+      }
+    }
+  },
+  "definitions": {},
+  "parameters": {},
+  "responses": {},
+  "securityDefinitions": {
+    "undefined": {
+      "type": "basic"
+    }
+  },
+  "security": [],
+  "tags": []
+}
